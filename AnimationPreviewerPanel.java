@@ -116,7 +116,7 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 		maximumColorValue = paletteSize - 1;
 		defaultColorValues = new int[paletteSize];
 		for (int i = 0; i < defaultColorValues.length; i++) {
-			defaultColorValues[i] = maximumColorValue - i;
+			defaultColorValues[i] = i;
 		}
 		redValues = new int[paletteSize];
 		greenValues = new int[paletteSize];
@@ -463,7 +463,7 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 					if (argbValue < 0) {
 						argbValue += 4294967296L;
 					}
-					int colorIndex = maximumColorValue - ((int)(argbValue % 256) / grayscaleAmount);
+					int colorIndex = (int)(argbValue % 256) / grayscaleAmount;
 					if (i == patternIndex &&
 							(x == 0 || x == patternDisplayLength - 1 || y == 0 || y == patternDisplayLength - 1)) {
 						patternList.setRGB(x + (patternDisplayLength * i), y, inverseColors[colorIndex].getRGB());
@@ -495,7 +495,7 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 				if (argbValue < 0) {
 					argbValue += 4294967296L;
 				}
-				int colorIndex = maximumColorValue - ((int)(argbValue % 256) / grayscaleAmount);
+				int colorIndex = (int)(argbValue % 256) / grayscaleAmount;
 				if (colorIndex != 0) {
 					if (borderEnabled &&
 							(x == 0 || x == image.getWidth() - 1 || y == 0 || y == image.getHeight() - 1)) {

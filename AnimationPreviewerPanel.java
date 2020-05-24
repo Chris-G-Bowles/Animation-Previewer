@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -655,65 +656,78 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 	public void mouseExited(MouseEvent e) {}
 	
 	private void updateColor(int paletteIndex) {
-		if (AnimationPreviewer.isValidInteger(redTextFields[paletteIndex].getText())) {
-			int newRedValue = evaluateInput(Integer.parseInt(redTextFields[paletteIndex].getText()),
-					minimumColorValue, maximumColorValue, redValues[paletteIndex]);
+		Scanner redTextFieldInput = new Scanner(redTextFields[paletteIndex].getText());
+		if (redTextFieldInput.hasNextInt()) {
+			int newRedValue = evaluateInput(redTextFieldInput.nextInt(), minimumColorValue,
+					maximumColorValue, redValues[paletteIndex]);
 			redValues[paletteIndex] = newRedValue;
 			redTextFields[paletteIndex].setText("" + newRedValue);
 		} else {
 			redTextFields[paletteIndex].setText("" + redValues[paletteIndex]);
 		}
-		if (AnimationPreviewer.isValidInteger(greenTextFields[paletteIndex].getText())) {
-			int newGreenValue = evaluateInput(Integer.parseInt(greenTextFields[paletteIndex].getText()),
-					minimumColorValue, maximumColorValue, greenValues[paletteIndex]);
+		redTextFieldInput.close();
+		Scanner greenTextFieldInput = new Scanner(greenTextFields[paletteIndex].getText());
+		if (greenTextFieldInput.hasNextInt()) {
+			int newGreenValue = evaluateInput(greenTextFieldInput.nextInt(), minimumColorValue,
+					maximumColorValue, greenValues[paletteIndex]);
 			greenValues[paletteIndex] = newGreenValue;
 			greenTextFields[paletteIndex].setText("" + newGreenValue);
 		} else {
 			greenTextFields[paletteIndex].setText("" + greenValues[paletteIndex]);
 		}
-		if (AnimationPreviewer.isValidInteger(blueTextFields[paletteIndex].getText())) {
-			int newBlueValue = evaluateInput(Integer.parseInt(blueTextFields[paletteIndex].getText()),
-					minimumColorValue, maximumColorValue, blueValues[paletteIndex]);
+		greenTextFieldInput.close();
+		Scanner blueTextFieldInput = new Scanner(blueTextFields[paletteIndex].getText());
+		if (blueTextFieldInput.hasNextInt()) {
+			int newBlueValue = evaluateInput(blueTextFieldInput.nextInt(), minimumColorValue,
+					maximumColorValue, blueValues[paletteIndex]);
 			blueValues[paletteIndex] = newBlueValue;
 			blueTextFields[paletteIndex].setText("" + newBlueValue);
 		} else {
 			blueTextFields[paletteIndex].setText("" + blueValues[paletteIndex]);
 		}
+		blueTextFieldInput.close();
 		generateColorObjects();
 	}
 	
 	private void updateTint() {
-		if (AnimationPreviewer.isValidInteger(redTintTextField.getText())) {
-			int newRedTintValue = evaluateInput(Integer.parseInt(redTintTextField.getText()),
-					minimumTintValue, maximumTintValue, redTintValue);
+		Scanner redTintTextFieldInput = new Scanner(redTintTextField.getText());
+		if (redTintTextFieldInput.hasNextInt()) {
+			int newRedTintValue = evaluateInput(redTintTextFieldInput.nextInt(), minimumTintValue,
+					maximumTintValue, redTintValue);
 			redTintValue = newRedTintValue;
 			redTintTextField.setText("" + newRedTintValue);
 		} else {
 			redTintTextField.setText("" + redTintValue);
 		}
-		if (AnimationPreviewer.isValidInteger(greenTintTextField.getText())) {
-			int newGreenTintValue = evaluateInput(Integer.parseInt(greenTintTextField.getText()),
-					minimumTintValue, maximumTintValue, greenTintValue);
+		redTintTextFieldInput.close();
+		Scanner greenTintTextFieldInput = new Scanner(greenTintTextField.getText());
+		if (greenTintTextFieldInput.hasNextInt()) {
+			int newGreenTintValue = evaluateInput(greenTintTextFieldInput.nextInt(), minimumTintValue,
+					maximumTintValue, greenTintValue);
 			greenTintValue = newGreenTintValue;
 			greenTintTextField.setText("" + newGreenTintValue);
 		} else {
 			greenTintTextField.setText("" + greenTintValue);
 		}
-		if (AnimationPreviewer.isValidInteger(blueTintTextField.getText())) {
-			int newBlueTintValue = evaluateInput(Integer.parseInt(blueTintTextField.getText()),
-					minimumTintValue, maximumTintValue, blueTintValue);
+		greenTintTextFieldInput.close();
+		Scanner blueTintTextFieldInput = new Scanner(blueTintTextField.getText());
+		if (blueTintTextFieldInput.hasNextInt()) {
+			int newBlueTintValue = evaluateInput(blueTintTextFieldInput.nextInt(), minimumTintValue,
+					maximumTintValue, blueTintValue);
 			blueTintValue = newBlueTintValue;
 			blueTintTextField.setText("" + newBlueTintValue);
 		} else {
 			blueTintTextField.setText("" + blueTintValue);
 		}
+		blueTintTextFieldInput.close();
 		generateColorObjects();
 	}
 	
 	private void updateDelayLength() {
-		if (AnimationPreviewer.isValidInteger(delayLengthTextField.getText())) {
-			int newDelayLength = evaluateInput(Integer.parseInt(delayLengthTextField.getText()),
-					minimumDelayLength, maximumDelayLength, delayLength);
+		Scanner delayLengthTextFieldInput = new Scanner(delayLengthTextField.getText());
+		if (delayLengthTextFieldInput.hasNextInt()) {
+			int newDelayLength = evaluateInput(delayLengthTextFieldInput.nextInt(), minimumDelayLength,
+					maximumDelayLength, delayLength);
 			delayLength = newDelayLength;
 			delayLengthTextField.setText("" + newDelayLength);
 			if (animationEnabled) {
@@ -723,6 +737,7 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 		} else {
 			delayLengthTextField.setText("" + delayLength);
 		}
+		delayLengthTextFieldInput.close();
 	}
 	
 	private void zoomIn() {
@@ -806,9 +821,10 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 	
 	private void moveSelectedPattern() {
 		if (!animationEnabled) {
-			if (AnimationPreviewer.isValidInteger(moveSelectedPatternTextField.getText())) {
-				int newPatternIndex = evaluateInput(Integer.parseInt(moveSelectedPatternTextField.getText()) - 1,
-						0, patterns.size() - 1, patternIndex);
+			Scanner moveSelectedPatternTextFieldInput = new Scanner(moveSelectedPatternTextField.getText());
+			if (moveSelectedPatternTextFieldInput.hasNextInt()) {
+				int newPatternIndex = evaluateInput(moveSelectedPatternTextFieldInput.nextInt() - 1, 0,
+						patterns.size() - 1, patternIndex);
 				BufferedImage temporary = patterns.get(patternIndex);
 				patterns.set(patternIndex, patterns.get(newPatternIndex));
 				patterns.set(newPatternIndex, temporary);
@@ -817,6 +833,7 @@ public class AnimationPreviewerPanel extends JPanel implements ActionListener, K
 			} else {
 				moveSelectedPatternTextField.setText("" + (patternIndex + 1));
 			}
+			moveSelectedPatternTextFieldInput.close();
 		}
 	}
 	

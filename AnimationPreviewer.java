@@ -17,87 +17,85 @@ public class AnimationPreviewer {
 	
 	public static void main(String[] args) {
 		System.out.println("* Animation Previewer *");
-		if (args.length == 0 || args.length == 3) {
-			Scanner input = new Scanner(System.in);
-			String directoryLocation;
-			if (args.length == 0) {
-				System.out.print("Enter a directory location containing between " + MINIMUM_LIST_SIZE + " to " +
-						MAXIMUM_LIST_SIZE + " patterns: ");
-				directoryLocation = input.nextLine();
-			} else {
-				directoryLocation = args[0];
-			}
-			String patternResolutionOption;
-			if (args.length == 0) {
-				System.out.println("Select the pattern resolution to use:");
-				System.out.println("1) 8x8 pixels");
-				System.out.println("2) 16x16 pixels");
-				System.out.println("3) 32x32 pixels");
-				System.out.println("4) 64x64 pixels");
-				System.out.print("Pattern resolution option: ");
-				patternResolutionOption = input.nextLine();
-			} else {
-				patternResolutionOption = args[1];
-			}
-			String paletteSizeOption;
-			if (args.length == 0) {
-				System.out.println("Select the palette size to use:");
-				System.out.println("1) 4 colors");
-				System.out.println("2) 6 colors");
-				System.out.println("3) 8 colors");
-				System.out.print("Palette size option: ");
-				paletteSizeOption = input.nextLine();
-			} else {
-				paletteSizeOption = args[2];
-			}
-			input.close();
-			File directory = new File(directoryLocation);
-			if (directory.isDirectory()) {
-				if (isValidInteger(patternResolutionOption) && Integer.parseInt(patternResolutionOption) >= 1 &&
-						Integer.parseInt(patternResolutionOption) <= 4) {
-					patternLength = (int)Math.pow(2, Integer.parseInt(patternResolutionOption) + 2);
-					if (isValidInteger(paletteSizeOption) && Integer.parseInt(paletteSizeOption) >= 1 &&
-							Integer.parseInt(paletteSizeOption) <= 3) {
-						int paletteSize = (Integer.parseInt(paletteSizeOption) * 2) + 2;
-						grayscaleAmount = 255 / ((Integer.parseInt(paletteSizeOption) * 2) + 1);
-						System.out.println("(Please wait a few seconds for the patterns to load.)");
-						addPatternsFromDirectory(directory);
-						if (patterns.size() >= MINIMUM_LIST_SIZE) {
-							JFrame frame = new JFrame("Animation Previewer");
-							AnimationPreviewerPanel panel = new AnimationPreviewerPanel(frame, directoryLocation,
-									patterns, patternLength, paletteSize, grayscaleAmount);
-							frame.setContentPane(panel);
-							int frameWidth = 1280;
-							int frameHeight = 720;
-							if (OPERATING_SYSTEM.indexOf("mac") >= 0) {
-								frameHeight += 22;
-							} else if (OPERATING_SYSTEM.indexOf("win") >= 0) {
-								frameWidth += 16;
-								frameHeight += 39;
-							}
-							frame.setSize(frameWidth, frameHeight);
-							frame.setLocationRelativeTo(null);
-							frame.setResizable(false);
-							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-							frame.setVisible(true);
-						} else {
-							System.out.println("Error: " + directoryLocation + " contains less than " +
-									MINIMUM_LIST_SIZE + " pattern.");
+		if (args.length != 0 && args.length != 3) {
+			error("This program's usage is as follows:\n" +
+					"java AnimationPreviewer\n" +
+					"java AnimationPreviewer <directory location> <pattern resolution option> <palette size option>");
+		}
+		Scanner input = new Scanner(System.in);
+		String directoryLocation;
+		if (args.length == 0) {
+			System.out.print("Enter a directory location containing between " + MINIMUM_LIST_SIZE + " to " +
+					MAXIMUM_LIST_SIZE + " patterns: ");
+			directoryLocation = input.nextLine();
+		} else {
+			directoryLocation = args[0];
+		}
+		String patternResolutionOption;
+		if (args.length == 0) {
+			System.out.println("Select the pattern resolution to use:");
+			System.out.println("1) 8x8 pixels");
+			System.out.println("2) 16x16 pixels");
+			System.out.println("3) 32x32 pixels");
+			System.out.println("4) 64x64 pixels");
+			System.out.print("Pattern resolution option: ");
+			patternResolutionOption = input.nextLine();
+		} else {
+			patternResolutionOption = args[1];
+		}
+		String paletteSizeOption;
+		if (args.length == 0) {
+			System.out.println("Select the palette size to use:");
+			System.out.println("1) 4 colors");
+			System.out.println("2) 6 colors");
+			System.out.println("3) 8 colors");
+			System.out.print("Palette size option: ");
+			paletteSizeOption = input.nextLine();
+		} else {
+			paletteSizeOption = args[2];
+		}
+		input.close();
+		File directory = new File(directoryLocation);
+		if (directory.isDirectory()) {
+			if (isValidInteger(patternResolutionOption) && Integer.parseInt(patternResolutionOption) >= 1 &&
+					Integer.parseInt(patternResolutionOption) <= 4) {
+				patternLength = (int)Math.pow(2, Integer.parseInt(patternResolutionOption) + 2);
+				if (isValidInteger(paletteSizeOption) && Integer.parseInt(paletteSizeOption) >= 1 &&
+						Integer.parseInt(paletteSizeOption) <= 3) {
+					int paletteSize = (Integer.parseInt(paletteSizeOption) * 2) + 2;
+					grayscaleAmount = 255 / ((Integer.parseInt(paletteSizeOption) * 2) + 1);
+					System.out.println("(Please wait a few seconds for the patterns to load.)");
+					addPatternsFromDirectory(directory);
+					if (patterns.size() >= MINIMUM_LIST_SIZE) {
+						JFrame frame = new JFrame("Animation Previewer");
+						AnimationPreviewerPanel panel = new AnimationPreviewerPanel(frame, directoryLocation,
+								patterns, patternLength, paletteSize, grayscaleAmount);
+						frame.setContentPane(panel);
+						int frameWidth = 1280;
+						int frameHeight = 720;
+						if (OPERATING_SYSTEM.indexOf("mac") >= 0) {
+							frameHeight += 22;
+						} else if (OPERATING_SYSTEM.indexOf("win") >= 0) {
+							frameWidth += 16;
+							frameHeight += 39;
 						}
+						frame.setSize(frameWidth, frameHeight);
+						frame.setLocationRelativeTo(null);
+						frame.setResizable(false);
+						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+						frame.setVisible(true);
 					} else {
-						System.out.println("Error: Invalid palette size option.");
+						System.out.println("Error: " + directoryLocation + " contains less than " +
+								MINIMUM_LIST_SIZE + " pattern.");
 					}
 				} else {
-					System.out.println("Error: Invalid pattern resolution option.");
+					System.out.println("Error: Invalid palette size option.");
 				}
 			} else {
-				System.out.println("Error: " + directoryLocation + " is not a valid directory.");
+				System.out.println("Error: Invalid pattern resolution option.");
 			}
 		} else {
-			System.out.println("This program's usage is as follows:");
-			System.out.println("java AnimationPreviewer");
-			System.out.println("java AnimationPreviewer <directory location> <pattern resolution option> " +
-					"<palette size option>");
+			System.out.println("Error: " + directoryLocation + " is not a valid directory.");
 		}
 	}
 	

@@ -31,7 +31,7 @@ public class AnimationPreviewer {
 		} else {
 			directoryLocation = args[0];
 		}
-		String patternResolutionOption;
+		String patternResolutionString;
 		if (args.length == 0) {
 			System.out.println("Select the pattern resolution to use:");
 			System.out.println("1) 8x8 pixels");
@@ -39,31 +39,31 @@ public class AnimationPreviewer {
 			System.out.println("3) 32x32 pixels");
 			System.out.println("4) 64x64 pixels");
 			System.out.print("Pattern resolution option: ");
-			patternResolutionOption = input.nextLine();
+			patternResolutionString = input.nextLine();
 		} else {
-			patternResolutionOption = args[1];
+			patternResolutionString = args[1];
 		}
-		String paletteSizeOption;
+		String paletteSizeString;
 		if (args.length == 0) {
 			System.out.println("Select the palette size to use:");
 			System.out.println("1) 4 colors");
 			System.out.println("2) 6 colors");
 			System.out.println("3) 8 colors");
 			System.out.print("Palette size option: ");
-			paletteSizeOption = input.nextLine();
+			paletteSizeString = input.nextLine();
 		} else {
-			paletteSizeOption = args[2];
+			paletteSizeString = args[2];
 		}
 		input.close();
 		File directory = new File(directoryLocation);
 		if (directory.isDirectory()) {
-			if (isValidInteger(patternResolutionOption) && Integer.parseInt(patternResolutionOption) >= 1 &&
-					Integer.parseInt(patternResolutionOption) <= 4) {
-				patternLength = (int)Math.pow(2, Integer.parseInt(patternResolutionOption) + 2);
-				if (isValidInteger(paletteSizeOption) && Integer.parseInt(paletteSizeOption) >= 1 &&
-						Integer.parseInt(paletteSizeOption) <= 3) {
-					int paletteSize = (Integer.parseInt(paletteSizeOption) * 2) + 2;
-					grayscaleAmount = 255 / ((Integer.parseInt(paletteSizeOption) * 2) + 1);
+			if (isValidInteger(patternResolutionString) && Integer.parseInt(patternResolutionString) >= 1 &&
+					Integer.parseInt(patternResolutionString) <= 4) {
+				patternLength = (int)Math.pow(2, Integer.parseInt(patternResolutionString) + 2);
+				if (isValidInteger(paletteSizeString) && Integer.parseInt(paletteSizeString) >= 1 &&
+						Integer.parseInt(paletteSizeString) <= 3) {
+					int paletteSize = (Integer.parseInt(paletteSizeString) * 2) + 2;
+					grayscaleAmount = 255 / ((Integer.parseInt(paletteSizeString) * 2) + 1);
 					System.out.println("(Please wait a few seconds for the patterns to load.)");
 					addPatternsFromDirectory(directory);
 					if (patterns.size() >= MINIMUM_LIST_SIZE) {

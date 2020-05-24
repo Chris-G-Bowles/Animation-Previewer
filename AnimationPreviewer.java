@@ -164,4 +164,9 @@ public class AnimationPreviewer {
 			System.out.println("Error: " + file.getPath() + " does not contain a readable pattern.");
 		}
 	}
+	
+	private static void error(String message) {
+		System.out.println("Error: " + message);
+		System.exit(1);
+	}
 }
